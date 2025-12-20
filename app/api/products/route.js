@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
-import clientPromise from "@/lib/mongodb";
-export async function GET(req) {
-    // let data=await fetch('/');
-    // console.log(req)
-    return NextResponse.json({ success: true, req })
 
-}
+import Product from "@/models/product";
+import jwt from 'jsonwebtoken';
+// export async function GET(req) {
+//     // let data=await fetch('/');
+//     // console.log(req)
+//     return NextResponse.json({ success: true, req })
+
+// }
 
 /*req.body=
 {
@@ -23,20 +25,22 @@ timestamp:updated or lauchtime fas..
 
 
 export async function POST(req) {
-    let data = await req.json();
-    const client = await clientPromise;
-    const db = client.db('ecommerceDB')
-    const products = db.collection('products')
-    let product = products.findOne({ name: data.name, description: data.description, sellerId: data.sellerId });
+    const token=req.cookies.get('token')?.value;
+    const decoded=jwt.verify(token,process.env.JWT_SECRET);
+    const sellerId=decoded.sellerId;
+    const data = await req.json();
+    const product = Product.findOne({ name: data.name, description: data.description, sellerId: sellerId });
     if (product) {
         NextResponse.json({ success: false, message: 'You have already added that product for sale. You can update the product properties by their id' })
     }
-    else{
-        products.insertOne({
-            sellerId:1,
-            name:data.name,
-            
+    else {
+      const newproduct= await Product.Create({
+            ...data,
+            sellerId
         })
-        NextResponse.json({ success: true, message: 'Product added for sale' })
+        return Response.json(
+            newproduct,
+            { status: 201 }
+        );
     }
 }

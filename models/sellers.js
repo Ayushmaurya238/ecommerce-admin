@@ -10,7 +10,8 @@ const SellerSchema = mongoose.Schema({
     password:{
         type:string,
         required:true,
-        minlength:8
+        minlength:8,
+        select:false
     },
     phone_no: {
         type: String,
