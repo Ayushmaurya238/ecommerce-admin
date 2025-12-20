@@ -6,6 +6,7 @@ export async function GET(req) {
     return NextResponse.json({ success: true, req })
 
 }
+
 /*req.body=
 {
 name:string,
@@ -18,7 +19,6 @@ isActive:
 },{
 timestamp:updated or lauchtime fas..
 }
-
 */
 
 
@@ -39,6 +39,4 @@ export async function POST(req) {
         })
         NextResponse.json({ success: true, message: 'Product added for sale' })
     }
-
-
 }
