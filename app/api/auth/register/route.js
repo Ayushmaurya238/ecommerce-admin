@@ -17,7 +17,7 @@ export default async function POST(req) {
             email: data.email,
             shop_name: data.shop_name,
         });
-        return Response.json({ success: true, message: 'New seller created' });
+        return Response.json({ success: true, message: 'New seller created' },{status:200});
     }
 
 }

@@ -2,12 +2,14 @@ import { NextResponse } from "next/server";
 
 import Product from "@/models/product";
 import jwt from 'jsonwebtoken';
-// export async function GET(req) {
-//     // let data=await fetch('/');
-//     // console.log(req)
-//     return NextResponse.json({ success: true, req })
+export async function GET(req) {
+    const token=req.cookies.get('token')?.value;
+    const decoded=jwt.verify(token,process.env.JWT_SECRET);
+    const sellerId=decoded.sellerId;
+    const products=Product.findMany({sellerId});
+    return NextResponse.json(products,{status:200});
 
-// }
+}
 
 /*req.body=
 {

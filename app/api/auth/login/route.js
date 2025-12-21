@@ -7,7 +7,6 @@ export default async function POST(req) {
     const seller = await Seller.findOne({ email }).select('+password');
     if (!seller) {
         return Response.json({ message: 'Invalid Credential' }, { status: 401 })
-
     }
     const matchpass = await bcrypt.compare(password, seller.password);
     if (!matchpass) {
