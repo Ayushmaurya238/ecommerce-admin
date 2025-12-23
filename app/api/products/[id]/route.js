@@ -19,7 +19,7 @@ export default async function GET(req, { params }) {
         )
     }
     const product = Product.findOne({ _id: productid, sellerId: sellerId });
-    NextResponse.json(product,{status:200});
+    NextResponse.json(product, { status: 200 });
 
 }
 
@@ -40,15 +40,20 @@ export default async function PUT(req, { params }) {
         )
     }
     const sellerId = decoded.sellerId;
-    const { name, description, price, stock, category, images, isActive } = await req.json();
+    const body = await req.json();
+    const parsed = productSchema.safeParse(data);
+    if (!parsed.success) {
+        return Response.json({ errors: parsed.error.flatten().fieldErrors }, { status: 400 })
+    }
+    const { name, description, price, stock, category, images, isActive } = body;
     // Product.update({_id:productid},{$set{}})
     const product = Product.findOne({ _id: productid, sellerId: sellerId });
     if (!product) {
         return Response.json({ message: 'Product not found' }, { status: 404 })
     }
     Product.updateOne(product, { $set: { name, description, price, stock, category, images, isActive } })
-    
-    return Response.json({message:'Updated product successfully'},{status:200});
+
+    return Response.json({ message: 'Updated product successfully' }, { status: 200 });
 }
 
 export default async function DELETE(req, { params }) {
@@ -67,11 +72,11 @@ export default async function DELETE(req, { params }) {
             { status: 401 }
         )
     }
-    const sellerId=decoded.sellerId;
-    const product=Product.findOne({_id:productid,sellerId:sellerId});
-    if(!product){
-        return Response.json({message:'Product not found'},{status:404});
+    const sellerId = decoded.sellerId;
+    const product = Product.findOne({ _id: productid, sellerId: sellerId });
+    if (!product) {
+        return Response.json({ message: 'Product not found' }, { status: 404 });
     }
-    Product.deleteOne({_id:productid});
-    return Response.json({message:'Product deleted successfully'});
+    Product.deleteOne({ _id: productid });
+    return Response.json({ message: 'Product deleted successfully' });
 }

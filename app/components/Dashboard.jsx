@@ -1,53 +1,21 @@
 // dashboard.jsx
 'use client'
 import React, { useState } from 'react'
-import { BsGrid } from "react-icons/bs";
-import { BsBoxSeamFill } from "react-icons/bs";
-import { GoPeople } from "react-icons/go";
-import { BiArchive } from "react-icons/bi";
-import { FiCompass } from "react-icons/fi";
-import { RiStore3Fill } from "react-icons/ri";
+
 import { GoDatabase } from "react-icons/go";
 import { BiNotepad } from "react-icons/bi";
 import { LuMessageCircleDashed } from "react-icons/lu";
 import { GrMenu } from "react-icons/gr";
-import Link from 'next/link';
-import {NavLink} from 'react-router-dom';
-const Dashboard = () => {
-    const [active, setActive] = useState('overview')
+import Sidebar from './Sidebar';
 
-    const menuItem = (id, icon, label) => (
-        <li
-            onClick={() => setActive(id)}
-            className={`py-1 flex gap-2 rounded-md items-center px-1 cursor-pointer
-        ${active === id ? "bg-black text-white" : "hover:bg-gray-100"}
-      `}
-        >
-            <span>{icon}</span>
-            {label}
-        </li>
-    );
+const Dashboard = () => {
+    
     return (
         // sidebar
         <>
             <div className=' flex h-screen overflow-hidden'>
 
-                <div className='bg-white w-[15vw] px-2 h-screen overflow-visible'>
-                    <div className='py-3 mx-1 text-xl text-shadow-2xs cursor-pointer' >  
-                        <Link href={'/'}>
-                        eComAdmin
-                        </Link>
-                    </div>
-                    <ul className="flex flex-col gap-1">
-                        {menuItem("overview", <BsGrid />, "Overview")}
-                        {menuItem("products", <BsBoxSeamFill />, "Products")}
-                        {menuItem("customer", <GoPeople />, "Customer")}
-                        {menuItem("orders", <BiArchive />, "Orders")}
-                        {menuItem("shipment", <FiCompass />, "Shipment")}
-                        {menuItem("setting", <RiStore3Fill />, "Store Setting")}
-                    </ul>
-                </div>
-
+                <Sidebar menu={'overview'}/>
                 <div className='bg-[#F7F7F7] w-[85vw] h-screen px-2 py-5 overflow-y-scroll overflow-x-hidden'>
                     <form className="max-w-md ">
                         <label htmlFor="search" className="block mb-2.5 text-sm font-medium text-heading sr-only ">Search</label>
