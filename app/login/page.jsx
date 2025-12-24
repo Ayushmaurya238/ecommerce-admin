@@ -8,8 +8,8 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState(null)
-const [showpass, setShowpass] = useState(false);
-  const handleSubmit = (e) => {
+  const [showpass, setShowpass] = useState(false);
+  const handleSubmit = async (e) => {
     e.preventDefault(); // 
     const parsed = loginSchema.safeParse({ email, password });
 
@@ -18,13 +18,34 @@ const [showpass, setShowpass] = useState(false);
       return;
     }
 
-   
+
     setErrors(null);
 
     // 👉 Call login API here (later)
     console.log("Validation passed");
 
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
+    const raw = JSON.stringify({
+      "email": email,
+      "password": password
+    });
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow"
+    };
+
+    const res = await fetch("/api/auth/login", requestOptions)
+    const data = await res.json();
+    // console.log(data);
+    if (data.message === 'Login successful') {
+      window.location.href = '/dashboard';
+    }
+    // console.log(await res.json());
   };
 
   return (
@@ -69,11 +90,11 @@ const [showpass, setShowpass] = useState(false);
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <span onClick={()=>{setShowpass(!showpass)}}>
-            {!showpass?
-                    <FaEye className="relative left-[94%]  bottom-7 cursor-pointer" height={60}/>
-                    :
-                    <FaEyeSlash className="relative left-[94%]  bottom-7 cursor-pointer" height={60}/>
+          <span onClick={() => { setShowpass(!showpass) }}>
+            {!showpass ?
+              <FaEye className="relative left-[94%]  bottom-7 cursor-pointer" height={60} />
+              :
+              <FaEyeSlash className="relative left-[94%]  bottom-7 cursor-pointer" height={60} />
             }
           </span>
 
@@ -101,7 +122,7 @@ const [showpass, setShowpass] = useState(false);
         <div className='flex justify-center relative bottom-7 gap-2'>
           <span>
 
-          Don't have an account?{'   '}
+            Don't have an account?{'   '}
           </span>
           <Link href="/register" className="text-blue-400 underline">
             Register

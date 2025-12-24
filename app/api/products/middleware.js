@@ -15,6 +15,14 @@ export default async function middleware(req) {
     try {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (!decoded) {
+            return NextResponse.json({
+                message: "Unauthorised"
+            },
+                {
+                    status: 401
+                })
+        }
         const sellerId = decoded.sellerId;
         return NextResponse.next();
     }

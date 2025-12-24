@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useState } from 'react';
+import Link from 'next/link';
 import { registerSchema } from '@/validators/auth';
 export default function Register() {
     const [password, setPassword] = useState('');
@@ -11,7 +12,7 @@ export default function Register() {
     const [lastname, setLastname] = useState('');
     const [firstname, setFirstname] = useState('');
     const [error, seterror] = useState(null);
-    const handlesubmit = (e) => {
+    const handlesubmit = async (e) => {
         e.preventDefault();
         if (password !== confirmedpassword) {
             alert("Passwords do not match");
@@ -19,8 +20,8 @@ export default function Register() {
         }
         const parsed = registerSchema.safeParse({
             name: firstname + ' ' + lastname,
-            email: email,
             password: password,
+            email: email,
             shopName: shopname
         });
         if (!parsed.success) {
@@ -28,10 +29,37 @@ export default function Register() {
             seterror(parsed.error.flatten().fieldErrors);
             return;
         }
+
+        seterror(null);
+        //api call to register the seller
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "name": firstname+' '+lastname,
+            "password":password,
+            "email": email,
+            "shopname": shopname
+        });
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        const res = fetch("/api/auth/register", requestOptions);
+        const data=await res.json();
+        console.log(data.success);
+        if(data.success){
+            window.location.href='/dashboard';
+        }
+
     }
     return (
         <div className='w-screen min-h-screen bg-[#F7F7F7] flex justify-center py-10 '>
-            <div className='bg-white mx-auto h-[90vh] w-[80vw] rounded-md shadow-lg flex flex-col items-center overflow-x-hidden'>
+            <div className='bg-white mx-auto h-[90vh] w-[80vw] rounded-md shadow-lg flex flex-col items-center '>
 
                 <div className='text-3xl font-extrabold shadow-2xl my-2'>
                     eComAdmin
@@ -50,7 +78,7 @@ export default function Register() {
                         </div>
                         <div className='w-1/2'  >
 
-                            <label htmlFor="lastName " className='block'>Last Name</label>
+                            <label htmlFor="lastName" className='block'>Last Name</label>
                             <input className='w-3/4 px-2 py-1 border rounded-md' type="text" placeholder='Enter Your Last Name' value={lastname} onChange={(e) => { setLastname(e.target.value) }} />
                         </div>
                     </div>
@@ -92,7 +120,7 @@ export default function Register() {
                         }
                     </div>
                     <div>
-                        <label htmlFor="shop">Shop Name</label>
+                        <label htmlFor="shop"   className='block'>Shop Name</label>
                         <input type="text" placeholder='Enter Your Shop Name' className='w-[43.75vw] px-2 py-1 border  rounded-md ' value={shopname} onChange={(e) => { setShopname(e.target.value) }} />
                     </div>
                     {
@@ -105,10 +133,16 @@ export default function Register() {
                     {/* Shop Name */}
                     <button type='submit' className='bg-black text-white p-2 rounded-md mt-2 cursor-pointer w-[43.75vw]'>Register</button>
                 </form>
+                <div className='flex justify-center relative gap-2'>
+                    <span>
+
+                        Already a seller ?{'   '}
+                    </span>
+                    <Link href="/login" className="text-blue-400 underline">
+                        Login
+                    </Link>
+                </div>
             </div>
-
-
-
 
         </div>
     )

@@ -7,13 +7,13 @@ const SellerSchema = mongoose.Schema({
         required: true,
         trim: true
     },
-    password:{
-        type:string,
-        required:true,
-        minlength:8,
-        select:false
+    password: {
+        type: String,
+        required: true,
+        minlength: 8,
+        select: false
     },
-    
+
     email: {
         type: String,
         required: true
@@ -32,5 +32,6 @@ const SellerSchema = mongoose.Schema({
     })
 
 
-const Seller = mongoose.model("Seller", SellerSchema) || mongoose.models.Seller
+const Seller =
+    mongoose.models.Seller || mongoose.model("Seller", SellerSchema);
 export default Seller
