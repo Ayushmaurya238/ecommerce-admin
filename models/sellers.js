@@ -13,10 +13,7 @@ const SellerSchema = mongoose.Schema({
         minlength:8,
         select:false
     },
-    phone_no: {
-        type: String,
-        required: true
-    },
+    
     email: {
         type: String,
         required: true

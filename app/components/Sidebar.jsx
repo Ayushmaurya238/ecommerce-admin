@@ -13,7 +13,7 @@ const Sidebar = () => {
     const path = usePathname();
     let menu = 'overview'
     // console.log(path);
-    if (path === '/product') {
+    if (path === '/dashboard/product') {
         menu = 'products'
     }
     else {
@@ -21,7 +21,7 @@ const Sidebar = () => {
     }
     const [active, setActive] = useState(menu);
     const menuItem = (id, icon, label) => (
-        <Link href={`/${id === 'products' ? 'product' : ''}`}>
+        <Link href={`/${id === 'products' ? 'dashboard/product' : ''}`}>
             <li
                 onClick={() => setActive(id)}
                 className={`py-1 flex gap-2 rounded-md items-center px-1 cursor-pointer

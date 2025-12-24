@@ -1,9 +1,17 @@
 import Seller from "@/models/sellers";
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-
+import { loginSchema } from "@/validators/auth";
+import { safeParse } from "zod";
 export default async function POST(req) {
-    const { email, password } = await req.json();
+    const body= await req.json();
+    const parsed=safeParse(body);
+    if(!parsed.success){
+        return Response.json({
+            error:parsed.error.flatten().fieldErrors,
+        },{status:400});
+    }
+    const { email, password } =body;
     const seller = await Seller.findOne({ email }).select('+password');
     if (!seller) {
         return Response.json({ message: 'Invalid Credential' }, { status: 401 })
