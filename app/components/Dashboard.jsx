@@ -6,27 +6,54 @@ import { GoDatabase } from "react-icons/go";
 import { BiNotepad } from "react-icons/bi";
 import { LuMessageCircleDashed } from "react-icons/lu";
 import { GrMenu } from "react-icons/gr";
+import { TbLogout2 } from "react-icons/tb";
 import Sidebar from './Sidebar';
-
+import { CgProfile } from "react-icons/cg";
 const Dashboard = () => {
-    
+    const [prod, setProd] = useState('');
+    const [showset, setShowset] = useState(false)
+    const  handleSubmit= async(e)=>{
+        e.preventDefault();
+        
+        
+    }
     return (
         // sidebar
         <>
             <div className=' flex h-screen overflow-hidden'>
 
-                <Sidebar menu={'overview'}/>
+                <Sidebar menu={'overview'} />
                 <div className='bg-[#F7F7F7] w-[85vw] h-screen px-2 py-5 overflow-y-scroll overflow-x-hidden'>
-                    <form className="max-w-md ">
-                        <label htmlFor="search" className="block mb-2.5 text-sm font-medium text-heading sr-only ">Search</label>
-                        <div className="relative rounded-md">
-                            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg className="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" /></svg>
+                    <div className='flex justify-between items-center mr-4'>
+
+                        <form onSubmit={handleSubmit} className="w-[30vw] ">
+                            <label htmlFor="search" className="block mb-2.5 text-sm font-medium text-heading sr-only ">Search</label>
+                            <div className="relative rounded-md">
+                                <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg className="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" /></svg>
+                                </div>
+                                <input type="search" id="search" className="block w-full p-3 ps-9 bg-neutral-secondary-medium border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand outline-0 border-0 bg-white shadow-xs placeholder:text-body" placeholder="Search" value={prod} required />
+                                <button type="button" className="absolute end-1.5 bottom-1.5 text-white bg-brand hover:bg-brand-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded text-xs px-3 py-1.5 focus:outline-none bg-black">Search</button>
                             </div>
-                            <input type="search" id="search" className="block w-full p-3 ps-9 bg-neutral-secondary-medium border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand outline-0 border-0 bg-white shadow-xs placeholder:text-body" placeholder="Search" required />
-                            <button type="button" className="absolute end-1.5 bottom-1.5 text-white bg-brand hover:bg-brand-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded text-xs px-3 py-1.5 focus:outline-none bg-black">Search</button>
+                        </form>
+                        {/* profile section */}
+                        <div className='rounded-full '>
+                            <CgProfile size={32} className=' cursor-pointer' onClick={() => setShowset(!showset)} />
                         </div>
-                    </form>
+                        {
+                            showset && (
+                                <div className='bg-white absolute textblack right-5 top-16 shadow-md rounded-md px-1 py-2'>
+                                    <ul>
+                                        <li className='flex items-center gap-2 hover:bg-gray-100 cursor-pointer rounded-md p-1'>Account Setting</li>
+                                        <li className='flex items-center gap-2 hover:bg-gray-100 cursor-pointer rounded-md p-1'><TbLogout2 /><span>Logout</span>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            )
+                        }
+                    </div>
+
                     <div className='m-2 mb-0 text-2xl'>
                         Welcome Back, <span className='font-bold'>Ayush!</span>
                     </div>
@@ -100,7 +127,7 @@ const Dashboard = () => {
                         </div>
 
                     </div>
-                    <div className='bg-white w-[83vw] min-h-[20vh] p-2 my-4 rounded-md'>
+                    <div className='bg-white w-[83vw] min-h-[20vh] p-2 my-4 rounded-md '>
                         <div>Latest Orders</div>
                     </div>
                 </div>

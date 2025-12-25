@@ -24,6 +24,6 @@ export const productSchema=z.object({
 
   images: z
     .array(z.string().url())
-    .min(1, "At least one image is required")
+    .min(2, "At least two image is required")
 
 });

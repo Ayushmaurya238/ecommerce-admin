@@ -14,14 +14,14 @@ const Sidebar = () => {
     let menu = 'overview'
     // console.log(path);
     if (path === '/dashboard/product') {
-        menu = 'products'
+        menu = 'product';
     }
     else {
         menu = 'overview';
     }
     const [active, setActive] = useState(menu);
     const menuItem = (id, icon, label) => (
-        <Link href={`/${id === 'products' ? 'dashboard/product' : ''}`}>
+        <Link href={`/${id === 'overview' ? 'dashboard' : 'dashboard/' + id}`}>
             <li
                 onClick={() => setActive(id)}
                 className={`py-1 flex gap-2 rounded-md items-center px-1 cursor-pointer
@@ -42,7 +42,7 @@ const Sidebar = () => {
             </div>
             <ul className="flex flex-col gap-1">
                 {menuItem("overview", <BsGrid />, "Overview")}
-                {menuItem("products", <BsBoxSeamFill />, "Products")}
+                {menuItem("product", <BsBoxSeamFill />, "Product")}
                 {menuItem("customer", <GoPeople />, "Customer")}
                 {menuItem("orders", <BiArchive />, "Orders")}
                 {menuItem("shipment", <FiCompass />, "Shipment")}

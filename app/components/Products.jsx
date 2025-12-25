@@ -2,7 +2,10 @@
 import React from 'react'
 import Sidebar from './Sidebar'
 import { FaRegImage } from "react-icons/fa";
+import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 const Products = () => {
+    const router = useRouter();
     return (
         <div className=' flex h-screen overflow-hidden'>
             <Sidebar menu={'products'} />
@@ -11,7 +14,7 @@ const Products = () => {
                     <span className='text-3xl font-semibold'>
                         Products
                     </span>
-                    <button className='bg-black mx-8 text-white px-2 py-1 rounded-md' >
+                    <button className='bg-black mx-8 text-white px-2 py-1 rounded-md' onClick={()=>{router.push('/dashboard/product/new')}}>
                         Add New
                     </button>
 

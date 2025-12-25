@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { productSchema } from "@/validators/product";
 import Product from "@/models/product";
 import jwt from 'jsonwebtoken';
-import { responseCookiesToRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 export async function GET(req) {
     const token = req.cookies.get('token')?.value;
     if (!token) {
@@ -17,21 +16,6 @@ export async function GET(req) {
     const products = Product.findMany({ sellerId });
     return NextResponse.json(products, { status: 200 });
 }
-
-/*req.body=
-{
-name:string,
-description:fdsa,
-price:33,
-stock:32,
-category: electronic/digital devices/ stationary things/ books/ ,
-image: [..urls]
-isActive:
-},{
-timestamp:updated or lauchtime fas..
-}
-*/
-
 
 export async function POST(req) {
     const data = await req.json();
@@ -54,7 +38,7 @@ export async function POST(req) {
         })
         return Response.json(
             newproduct,
-            { status: 201 }
+            { status: 200 }
         );
     }
 }
