@@ -14,7 +14,7 @@ const Products = () => {
                     <span className='text-3xl font-semibold'>
                         Products
                     </span>
-                    <button className='bg-black mx-8 text-white px-2 py-1 rounded-md' onClick={()=>{router.push('/dashboard/product/new')}}>
+                    <button className='bg-black mx-8 text-white px-2 py-1 rounded-md cursor-pointer' onClick={()=>{router.push('/dashboard/product/new')}}>
                         Add New
                     </button>
 

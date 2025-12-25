@@ -9,6 +9,9 @@ export const productSchema=z.object({
     .string()
     .min(10, "Description must be at least 10 characters"),
 
+    category: z
+      .string()
+      .min(1, "Category is required"),
   price: z
     .number()
     .positive("Price must be greater than 0"),
@@ -18,9 +21,6 @@ export const productSchema=z.object({
     .int()
     .nonnegative("Stock cannot be negative"),
 
-  category: z
-    .string()
-    .min(1, "Category is required"),
 
   images: z
     .array(z.string().url())

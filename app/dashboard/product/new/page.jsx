@@ -49,7 +49,7 @@ export default function AddProductForm() {
         setImageError('')
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
         const filteredImages = images.filter((url) => url.trim() !== '')
@@ -75,6 +75,32 @@ export default function AddProductForm() {
 
         setZoderror(null)
         console.log('FINAL PAYLOAD:', payload)
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify(payload);
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        const res = await fetch("/api/products", requestOptions);
+        // console.log(res);
+        const data = await res.json();
+        console.log(data);
+        if(res?.status===201){
+            router.back();
+            return;
+        }
+        if(!data.success){
+            alert(data.message);
+            return; 
+        }
+        
+        // console.log(data);
     }
 
     return (
@@ -254,7 +280,7 @@ export default function AddProductForm() {
 
                         <button
                             type="submit"
-                            className="px-5 py-2 bg-black text-white text-sm rounded-md hover:bg-gray-900"
+                            className="px-5 py-2 bg-black text-white text-sm rounded-md hover:bg-gray-900 cursor-pointer"
                         >
                             Save Product
                         </button>
