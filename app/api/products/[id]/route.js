@@ -1,82 +1,121 @@
 import { NextResponse } from "next/server";
 import Product from "@/models/product";
-import jwt from 'jsonwebtoken'
-// import jwt from 'jsonwebtoken'
-export default async function GET(req, { params }) {
-    const productId = { params };
-    const token = jwt.cookies.get('token')?.value;
-    if (!token) {
-        return Response.json(
-            { message: 'Unauthorized' },
-            { status: 401 }
-        )
-    }
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (!decoded) {
-        return Response.json(
-            { message: 'Invalid token' },
-            { status: 401 }
-        )
-    }
-    const product = Product.findOne({ _id: productid, sellerId: sellerId });
-    NextResponse.json(product, { status: 200 });
+import jwt from "jsonwebtoken";
+import dbConnect from "@/lib/mongodb";
+import { productSchema } from "@/validators/product";
 
+/* ================= HELPER ================= */
+function getSellerId(req) {
+  const token = req.cookies.get("token")?.value;
+  if (!token) return null;
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return decoded.sellerId;
+  } catch {
+    return null;
+  }
 }
 
-export default async function PUT(req, { params }) {
-    const productid = { params };
-    const token = jwt.cookies.get('token')?.value;
-    if (!token) {
-        return Response.json(
-            { message: 'Unauthorized' },
-            { status: 401 }
-        )
-    }
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (!decoded) {
-        return Response.json(
-            { message: 'Invalid token' },
-            { status: 401 }
-        )
-    }
-    const sellerId = decoded.sellerId;
-    const body = await req.json();
-    const parsed = productSchema.safeParse(data);
-    if (!parsed.success) {
-        return Response.json({ errors: parsed.error.flatten().fieldErrors }, { status: 400 })
-    }
-    const { name, description, price, stock, category, images, isActive } = body;
-    // Product.update({_id:productid},{$set{}})
-    const product = Product.findOne({ _id: productid, sellerId: sellerId });
-    if (!product) {
-        return Response.json({ message: 'Product not found' }, { status: 404 })
-    }
-    Product.updateOne(product, { $set: { name, description, price, stock, category, images, isActive } })
+/* ================= GET PRODUCT ================= */
+export async function GET(req, { params }) {
+  await dbConnect();
 
-    return Response.json({ message: 'Updated product successfully' }, { status: 200 });
+  const sellerId = getSellerId(req);
+  if (!sellerId) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = params;
+
+  const product = await Product.findOne({ _id: id, sellerId });
+
+  if (!product) {
+    return NextResponse.json({ message: "Product not found" }, { status: 404 });
+  }
+
+  return NextResponse.json(product, { status: 200 });
 }
 
-export default async function DELETE(req, { params }) {
-    const productid = { params };
-    const token = jwt.cookies.get('token')?.value;
-    if (!token) {
-        return Response.json(
-            { message: 'Unauthorized' },
-            { status: 401 }
-        )
-    }
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (!decoded) {
-        return Response.json(
-            { message: 'Invalid token' },
-            { status: 401 }
-        )
-    }
-    const sellerId = decoded.sellerId;
-    const product = Product.findOne({ _id: productid, sellerId: sellerId });
-    if (!product) {
-        return Response.json({ message: 'Product not found' }, { status: 404 });
-    }
-    Product.deleteOne({ _id: productid });
-    return Response.json({ message: 'Product deleted successfully' });
+/* ================= UPDATE PRODUCT ================= */
+export async function PUT(req, { params }) {
+  await dbConnect();
+
+  const sellerId = getSellerId(req);
+  if (!sellerId) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = params;
+  const body = await req.json();
+
+  const parsed = productSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { errors: parsed.error.flatten().fieldErrors },
+      { status: 400 }
+    );
+  }
+
+  const product = await Product.findOne({ _id: id, sellerId });
+  if (!product) {
+    return NextResponse.json({ message: "Product not found" }, { status: 404 });
+  }
+
+  await Product.updateOne(
+    { _id: id },
+    { $set: parsed.data }
+  );
+
+  return NextResponse.json(
+    { message: "Product updated successfully" },
+    { status: 200 }
+  );
+}
+
+/* ================= DELETE PRODUCT ================= */
+export async function DELETE(req, { params }) {
+  await dbConnect();
+
+  const sellerId = getSellerId(req);
+  if (!sellerId) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = params;
+
+  const product = await Product.findOne({ _id: id, sellerId });
+  if (!product) {
+    return NextResponse.json({ message: "Product not found" }, { status: 404 });
+  }
+
+  await Product.deleteOne({ _id: id });
+
+  return NextResponse.json(
+    { message: "Product deleted successfully" },
+    { status: 200 }
+  );
+}
+
+
+export async function PATCH(req, { params }) {
+  await dbConnect()
+
+  const sellerId = getSellerId(req)
+  if (!sellerId) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+  }
+
+  const { id } = params;
+  const { isActive } = await req.json()
+
+  const product = await Product.findOne({ _id: id, sellerId })
+  if (!product) {
+    return NextResponse.json({ message: 'Product not found' }, { status: 404 })
+  }
+
+  product.isActive = isActive
+  await product.save()
+
+  return NextResponse.json({ success: true })
 }

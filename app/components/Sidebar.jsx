@@ -13,7 +13,7 @@ const Sidebar = () => {
     const path = usePathname();
     let menu = 'overview'
     // console.log(path);
-    if (path === '/dashboard/product') {
+    if (path.startsWith('/dashboard/product')) {
         menu = 'product';
     }
     else {

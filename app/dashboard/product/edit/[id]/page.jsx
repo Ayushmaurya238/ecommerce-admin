@@ -2,9 +2,12 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { productSchema } from '@/validators/product'
+import { useEffect } from 'react'
+// import { useParams } from 'next/navigation'
+export default function AddProductForm({ params }) {
+    const router = useRouter();
 
-export default function AddProductForm() {
-    const router = useRouter()
+    const { id } = params;
 
     const [form, setForm] = useState({
         name: '',
@@ -13,10 +16,30 @@ export default function AddProductForm() {
         price: '',
         stock: '',
     })
-
     const [images, setImages] = useState(['', ''])
     const [imageError, setImageError] = useState('')
     const [zoderror, setZoderror] = useState(null)
+
+    useEffect(() => {
+        async function fetchProduct() {
+            const res = await fetch("/api/products/" + id)
+            const data = await res.json()
+
+            setForm({
+                name: data.name,
+                description: data.description,
+                category: data.category,
+                price: data.price,
+                stock: data.stock,
+            })
+
+            setImages(data.images)
+        }
+
+        fetchProduct()
+    }, [id])
+
+
 
     const handleChange = (e) => {
         setForm({
@@ -49,7 +72,7 @@ export default function AddProductForm() {
         setImageError('')
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
         const filteredImages = images.filter((url) => url.trim() !== '')
@@ -75,6 +98,35 @@ export default function AddProductForm() {
 
         setZoderror(null)
         console.log('FINAL PAYLOAD:', payload)
+
+        //Updating the product
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify(payload);
+
+        const requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        const res = await fetch("/api/products/" + id, requestOptions)
+
+        const data = await res.json();
+        console.log(data);
+        if (res?.status === 200) {
+            router.back();
+            return;
+        }
+        if (!data.success) {
+            alert(data.message);
+            return;
+        }
+
+
+
     }
 
     return (
