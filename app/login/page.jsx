@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import Seller from "@/models/sellers";
 import { redirect } from "next/navigation";
 import LoginPage from "../components/LoginPage";
-export async function Login() {
+export default async function Login() {
   await dbConnect();
   const token = cookies().get('token')?.value;
   if (!token) {

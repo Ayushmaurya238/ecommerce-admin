@@ -5,15 +5,30 @@ import { cookies } from 'next/headers'
 import jwt from 'jsonwebtoken'
 import Product from '@/models/product'
 import dbConnect from '@/lib/mongodb'
+import { redirect } from 'next/navigation'
 
 export default async function ProductsPage() {
   await dbConnect()
 
   const token = cookies().get('token')?.value
-  const decoded = jwt.verify(token, process.env.JWT_SECRET)
-  const sellerId = decoded.sellerId
+  if (!token) redirect('/')
 
-  const products = await Product.find({ sellerId }).lean()
+  let decoded
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET)
+  } catch {
+    redirect('/')
+  }
+
+  const sellerId = decoded.sellerId
+  
+  const products = (await Product.find({ sellerId }).lean()).map(p => ({
+    ...p,
+    _id: p._id.toString(),
+    sellerId: p.sellerId.toString(),
+    createdAt: p.createdAt?.toISOString(),
+    updatedAt: p.updatedAt?.toISOString(),
+  }))
 
   return (
     <div className="flex h-screen overflow-hidden">

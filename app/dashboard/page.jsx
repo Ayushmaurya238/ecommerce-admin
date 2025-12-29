@@ -5,6 +5,10 @@ import { getDashboardData } from '@/lib/dashboardStats'
 import { cookies } from 'next/headers'
 import jwt from 'jsonwebtoken'
 
+
+// import { LogoutfromAdmin } from '@/lib/logoutfromadmin'
+import { redirect } from 'next/navigation';
+import { DashboardHeader } from '../components/DashboardHeader'
 export default async function DashboardPage() {
 
   /* -------- AUTH (SERVER) -------- */
@@ -14,12 +18,13 @@ export default async function DashboardPage() {
   if (!token) {
     redirect('/')
   }
+  
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET)
   const sellerId = decoded.sellerId
 
   /* -------- SERVER DATA FETCH -------- */
-  const { metrics, salesData, stockByCategory,sellerName } =
+  const { metrics, salesData, stockByCategory, sellerName } =
     await getDashboardData(sellerId)
 
   return (
@@ -28,11 +33,7 @@ export default async function DashboardPage() {
       <Sidebar menu="overview" />
 
       <div className="bg-[#F7F7F7] w-[85vw] h-screen px-4 py-5 overflow-y-scroll">
-
-        <h2 className="text-2xl mb-1">
-          Welcome Back, <span className="font-bold">{sellerName}!</span>
-        </h2>
-
+        <DashboardHeader sellerName={sellerName} />
         <p className="text-sm text-gray-500 mb-4">
           Here's your current sales overview
         </p>
