@@ -35,12 +35,16 @@ export default function LoginPage() {
     const data = await res.json()
     setLoading(false)
 
+    // Inside handleSubmit in LoginPage.jsx
     if (!res.ok) {
       alert(data.message || 'Login failed')
+      setLoading(false)
       return
     }
 
-    // 🔥 ROLE-BASED REDIRECT (IMPORTANT)
+    // ✅ Force Next.js to re-sync cookies and server state
+    router.refresh();
+
     if (data.role === 'admin') {
       router.push('/admin')
     } else {

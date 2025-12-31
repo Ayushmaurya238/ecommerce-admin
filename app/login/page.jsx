@@ -1,26 +1,24 @@
-
-import { cookies } from "next/headers";
-
-import dbConnect from "@/lib/mongodb";
-import jwt from 'jsonwebtoken';
+// app/login/page.jsx
 import Seller from "@/models/sellers";
-import { redirect } from "next/navigation";
-import LoginPage from "../components/LoginPage";
+import jwt from 'jsonwebtoken';
+import dbConnect from "@/lib/mongodb";
+import { cookies } from "next/headers";
 export default async function Login() {
-  await dbConnect();
   const token = cookies().get('token')?.value;
-  if (!token) {
-    return (
-      <LoginPage />
-    )
+
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      await dbConnect();
+      const seller = await Seller.findById(decoded.sellerId);
+
+      if (seller) {
+        redirect(seller.role === 'admin' ? '/admin' : '/dashboard');
+      }
+    } catch (e) {
+      // If token is bad, do nothing and let the page render LoginPage
+    }
   }
-  const decoded = jwt.verify(token, process.env.JWT_SECRET)
-  const sellerId = decoded.sellerId;
-  const seller = await Seller.findOne({ _id: sellerId });
-  if (seller != null) {
-    redirect('/dashboard');
-  }
-  return (
-    <LoginPage />
-  )
+
+  return <LoginPage />;
 }
