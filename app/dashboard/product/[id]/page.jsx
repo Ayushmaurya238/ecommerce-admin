@@ -7,6 +7,11 @@ import Sidebar from '@/app/components/Sidebar'
 import ProductDetailClient from '@/app/components/ProductDetailClient'
 import { notFound } from 'next/navigation'
 
+export const metadata = {
+  title: "Product | eComAdmin",
+  description: "View all information related to a particular Product",
+};
+
 export default async function ProductPage({ params }) {
   const { id } = params
 

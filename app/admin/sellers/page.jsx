@@ -5,6 +5,10 @@ import SellerTable from "../components/SellerTable";
 import dbConnect from "@/lib/mongodb";
 import Seller from "@/models/sellers";
 
+export const metadata = {
+  title: "Sellers | eComAdmin",
+  description: "Show all sellers at one page to manage them from one place ",
+};
 export default async function SellersPage() {
   await dbConnect();
 

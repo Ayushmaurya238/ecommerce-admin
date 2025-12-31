@@ -6,9 +6,13 @@ import { cookies } from 'next/headers'
 import jwt from 'jsonwebtoken'
 import mongoose from 'mongoose'
 
-// import { LogoutfromAdmin } from '@/lib/logoutfromadmin'
 import { redirect } from 'next/navigation';
-import { DashboardHeader } from '../components/DashboardHeader'
+import { DashboardHeader } from '../components/DashboardHeader';
+
+export const metadata = {
+  title: "Dashboard | eComAdmin",
+  description: "To review your products sales analysis",
+};
 export default async function DashboardPage() {
 
   /* -------- AUTH (SERVER) -------- */

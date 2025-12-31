@@ -3,7 +3,10 @@
 
 import EditPage from "@/app/components/EditPage";
 
-
+export const metadata = {
+  title: "Edit product | eComAdmin",
+  description: "Update products details ",
+};
 
 // import { useParams } from 'next/navigation'
 export default function AddProductForm({ params }) {

@@ -7,6 +7,11 @@ import dbConnect from "@/lib/mongodb"
 
 import Settingpage from "@/app/components/Settingpage"
 import { redirect } from "next/navigation"
+
+export const metadata = {
+  title: "Acount-settings | eComAdmin",
+  description: "Can change password and update your profile",
+};
 export default async function SettingsPage() {
   const token = cookies().get('token')?.value
   if(!token){

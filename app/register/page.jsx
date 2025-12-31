@@ -5,6 +5,10 @@ import jwt from 'jsonwebtoken';
 import Seller from "@/models/sellers";
 import { redirect } from "next/navigation";
 
+export const metadata = {
+  title: "register | eComAdmin",
+  description: "Register to become seller on eComAdmin",
+};
 export default async function Register() {
     await dbConnect();
     const token=cookies().get('token')?.value;

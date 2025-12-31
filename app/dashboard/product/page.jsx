@@ -7,6 +7,10 @@ import Product from '@/models/product'
 import dbConnect from '@/lib/mongodb'
 import { redirect } from 'next/navigation'
 
+export const metadata = {
+  title: "Products | eComAdmin",
+  description: "View your whole products and their infos at Once",
+};
 export default async function ProductsPage() {
   await dbConnect()
 

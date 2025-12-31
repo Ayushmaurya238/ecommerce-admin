@@ -3,6 +3,12 @@ import Seller from "@/models/sellers";
 import jwt from 'jsonwebtoken';
 import dbConnect from "@/lib/mongodb";
 import { cookies } from "next/headers";
+// import { metadata } from "../layout";
+
+export const metadata = {
+  title: "Login | eComAdmin",
+  description: "Login to eComAdmin",
+};
 export default async function Login() {
   const token = cookies().get('token')?.value;
 

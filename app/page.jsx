@@ -4,6 +4,8 @@ import { cookies } from "next/headers";
 import jwt from 'jsonwebtoken'
 import Seller from "@/models/sellers";
 import { redirect } from "next/navigation";
+
+
 export default async function Home() {
   await dbConnect();
   const token = cookies().get('token')?.value;

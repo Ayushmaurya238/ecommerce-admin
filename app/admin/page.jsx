@@ -3,6 +3,11 @@ import AdminSidebar from "@/app/admin/components/AdminSidebar";
 import dbConnect from "@/lib/mongodb";
 import Seller from "@/models/sellers";
 
+
+export const metadata = {
+  title: "Admin | eComAdmin",
+  description: "Admin page for managing sellers",
+};
 export default async function AdminDashboard() {
   await dbConnect();
 
