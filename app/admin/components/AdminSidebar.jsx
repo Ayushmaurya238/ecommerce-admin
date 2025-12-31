@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { MdDashboard, MdPeople, MdLogout } from 'react-icons/md'
+import { MdDashboard, MdPeople, MdLogout, MdSettings } from 'react-icons/md'
 
 export default function AdminSidebar() {
   const pathname = usePathname()
@@ -27,8 +27,9 @@ export default function AdminSidebar() {
   )
 
   return (
-    <aside className="w-[15vw] min-w-55 h-screen bg-white border-r px-4 py-5 flex flex-col">
+    <aside className="w-[15vw] min-w-55 h-screen bg-white shadow-2xs px-4 py-5 flex flex-col">
 
+      {/* HEADER */}
       <div className="mb-8">
         <h2 className="text-lg font-extrabold">eComAdmin</h2>
         <p className="text-xs text-gray-500 uppercase tracking-wider">
@@ -36,11 +37,14 @@ export default function AdminSidebar() {
         </p>
       </div>
 
+      {/* NAV */}
       <nav className="flex-1 space-y-2">
         {link('/admin', 'Overview', MdDashboard)}
         {link('/admin/sellers', 'Sellers', MdPeople)}
+        {link('/admin/settings', 'Settings', MdSettings)}
       </nav>
 
+      {/* LOGOUT */}
       <button
         onClick={logout}
         className="flex items-center gap-2 text-sm text-red-600 px-3 py-2 rounded-md hover:bg-red-50"

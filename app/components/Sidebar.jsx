@@ -16,6 +16,9 @@ const Sidebar = () => {
     if (path.startsWith('/dashboard/product')) {
         menu = 'product';
     }
+    else if(path==='/dashboard/setting'){
+        menu='setting';
+    }
     else {
         menu = 'overview';
     }
@@ -46,7 +49,7 @@ const Sidebar = () => {
                 {menuItem("customer", <GoPeople />, "Customer")}
                 {menuItem("orders", <BiArchive />, "Orders")}
                 {menuItem("shipment", <FiCompass />, "Shipment")}
-                {menuItem("setting", <RiStore3Fill />, "Store Setting")}
+                {menuItem("setting", <RiStore3Fill />, "Account Setting")}
             </ul>
         </div>
     )

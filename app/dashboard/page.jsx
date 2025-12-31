@@ -25,14 +25,14 @@ export default async function DashboardPage() {
   
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET)
-  console.log(decoded.role)
-  const sellerId = new mongoose.Types.ObjectId(decoded.id)
+  // console.log(decoded.role)
+  const sellerId = decoded.sellerId;
   // console.log(sellerId);
 
   /* -------- SERVER DATA FETCH -------- */
   const { metrics, salesData, stockByCategory, sellerName } =
     await getDashboardData(sellerId)
-
+  // console.log(sellerName)
   return (
     <div className="flex h-screen overflow-hidden">
 
