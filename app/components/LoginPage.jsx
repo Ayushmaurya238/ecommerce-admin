@@ -2,130 +2,126 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { loginSchema } from '@/validators/auth'
-import { FaEye } from "react-icons/fa";
-import { FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa"
+import { useRouter } from 'next/navigation'
+
 export default function LoginPage() {
+  const router = useRouter()
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState(null)
-  const [showpass, setShowpass] = useState(false);
+  const [showPass, setShowPass] = useState(false)
+  const [loading, setLoading] = useState(false)
+
   const handleSubmit = async (e) => {
-    e.preventDefault(); // 
-    const parsed = loginSchema.safeParse({ email, password });
+    e.preventDefault()
 
+    const parsed = loginSchema.safeParse({ email, password })
     if (!parsed.success) {
-      setErrors(parsed.error.flatten().fieldErrors);
-      return;
+      setErrors(parsed.error.flatten().fieldErrors)
+      return
     }
-    setErrors(null);
 
-    // 👉 Call login API here (later)
-    console.log("Validation passed");
+    setErrors(null)
+    setLoading(true)
 
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    })
 
-    const raw = JSON.stringify({
-      "email": email,
-      "password": password
-    });
+    const data = await res.json()
+    setLoading(false)
 
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow"
-    };
-
-    const res = await fetch("/api/auth/login", requestOptions)
-    const data = await res.json();
-    // console.log(data);
-    if (data.message === 'Login successful') {
-      window.location.href = '/dashboard';
+    if (!res.ok) {
+      alert(data.message || 'Login failed')
+      return
     }
-    // console.log(await res.json());
-  };
+
+    // 🔥 ROLE-BASED REDIRECT (IMPORTANT)
+    if (data.role === 'admin') {
+      router.push('/admin')
+    } else {
+      router.push('/dashboard')
+    }
+  }
 
   return (
-    <div className="bg-[#F7F7F7] h-screen w-screen flex items-center">
-      <div className="rounded-md mx-auto h-[80vh] w-[80vw] bg-white">
+    <div className="bg-[#F7F7F7] min-h-screen flex items-center justify-center">
+      <div className="w-[420px] bg-white rounded-lg shadow-md p-8">
 
-        <div className="text-3xl py-5 text-center font-extrabold">
+        <h1 className="text-3xl font-extrabold text-center mb-4">
           eComAdmin
-        </div>
+        </h1>
 
-        <hr className="w-[60vw] mx-auto" />
-
-        <div className="text-center text-2xl mt-2">
+        <p className="text-center text-gray-500 mb-6">
           Login to manage your store
-        </div>
+        </p>
 
-        <form
-          onSubmit={handleSubmit}
-          className="mx-[20vw] my-6 flex flex-col"
-        >
-          <input
-            type="email"
-            placeholder="Email"
-            className="px-2 py-1 border-2 rounded-md"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+        <form onSubmit={handleSubmit} className="space-y-4">
 
-          {errors?.email && (
-            <span className="text-red-500 text-sm">
-              {errors.email[0]}
+          {/* EMAIL */}
+          <div>
+            <input
+              type="email"
+              placeholder="Email"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {errors?.email && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.email[0]}
+              </p>
+            )}
+          </div>
+
+          {/* PASSWORD */}
+          <div className="relative">
+            <input
+              type={showPass ? 'text' : 'password'}
+              placeholder="Password"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-black pr-10"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <span
+              onClick={() => setShowPass(!showPass)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
+            >
+              {showPass ? <FaEyeSlash /> : <FaEye />}
             </span>
-          )}
 
-          <br />
+            {errors?.password && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.password[0]}
+              </p>
+            )}
+          </div>
 
-
-          <input
-            type={showpass ? "text" : "password"}
-            placeholder="Password"
-            className="px-2 py-1 border-2 rounded-md"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <span onClick={() => { setShowpass(!showpass) }}>
-            {!showpass ?
-              <FaEye className="relative left-[94%]  bottom-7 cursor-pointer" height={60} />
-              :
-              <FaEyeSlash className="relative left-[94%]  bottom-7 cursor-pointer" height={60} />
-            }
-          </span>
-
-
-          {errors?.password && (
-            <span className="text-red-500 text-sm">
-              {errors.password[0]}
-            </span>
-          )}
-
-          <br />
-
-          <Link href="/forgottenpass" className="text-blue-400 underline relative bottom-7">
-            Forgot my password
-          </Link>
+          <div className="flex justify-between text-sm">
+            <Link href="/forgottenpass" className="text-blue-500 hover:underline">
+              Forgot password?
+            </Link>
+          </div>
 
           <button
-            className="bg-black text-white p-2 rounded-md mt-2 relative bottom-7 cursor-pointer"
             type="submit"
+            disabled={loading}
+            className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-900 transition disabled:opacity-50"
           >
-            Log in
+            {loading ? 'Logging in...' : 'Log in'}
           </button>
         </form>
 
-        <div className='flex justify-center relative bottom-7 gap-2'>
-          <span>
-
-            Don't have an account?{'   '}
-          </span>
-          <Link href="/register" className="text-blue-400 underline">
+        <p className="text-center text-sm mt-6">
+          Don’t have an account?{' '}
+          <Link href="/register" className="text-blue-500 hover:underline">
             Register
           </Link>
-        </div>
+        </p>
       </div>
     </div>
   )

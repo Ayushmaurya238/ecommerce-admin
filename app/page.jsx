@@ -16,9 +16,17 @@ export default async function Home() {
   }
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
   const sellerId = decoded.sellerId;
+  // console.log(decoded);
   const seller = await Seller.findOne({ _id: sellerId });
+  // console.log(seller);
   if (seller != null) {
-    redirect('/dashboard');
+    if(seller.role==='admin'){
+      redirect('/admin')
+    }
+    else{
+
+      redirect('/dashboard');
+    }
   }
   return (
     <>

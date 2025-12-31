@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import Seller from "@/models/sellers";
 import { redirect } from "next/navigation";
 
-export async function Register() {
+export default async function Register() {
     await dbConnect();
     const token=cookies().get('token')?.value;
     if(!token){
@@ -19,7 +19,9 @@ export async function Register() {
     if(seller!=null){
         redirect('/dashboard');
     }
+    console.log('getregis');
     return (
+       
         <RegisterComponent />
     )
 

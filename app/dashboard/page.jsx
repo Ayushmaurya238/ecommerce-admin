@@ -4,7 +4,7 @@ import DashboardCharts from '../components/DashboarCharts'
 import { getDashboardData } from '@/lib/dashboardStats'
 import { cookies } from 'next/headers'
 import jwt from 'jsonwebtoken'
-
+import mongoose from 'mongoose'
 
 // import { LogoutfromAdmin } from '@/lib/logoutfromadmin'
 import { redirect } from 'next/navigation';
@@ -21,7 +21,9 @@ export default async function DashboardPage() {
   
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET)
-  const sellerId = decoded.sellerId
+  console.log(decoded.role)
+  const sellerId = new mongoose.Types.ObjectId(decoded.id)
+  // console.log(sellerId);
 
   /* -------- SERVER DATA FETCH -------- */
   const { metrics, salesData, stockByCategory, sellerName } =

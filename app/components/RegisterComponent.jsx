@@ -20,10 +20,11 @@ export default function RegisterComponent() {
         }
         const parsed = registerSchema.safeParse({
             name: firstname + ' ' + lastname,
-            password: password,
-            email: email,
-            shopName: shopname
+            password,
+            email,
+            shopname: shopname, // ✅ FIXED
         });
+
         if (!parsed.success) {
             console.log(parsed.error.flatten().fieldErrors);
             seterror(parsed.error.flatten().fieldErrors);
@@ -36,8 +37,8 @@ export default function RegisterComponent() {
         myHeaders.append("Content-Type", "application/json");
 
         const raw = JSON.stringify({
-            "name": firstname+' '+lastname,
-            "password":password,
+            "name": firstname + ' ' + lastname,
+            "password": password,
             "email": email,
             "shopname": shopname
         });
@@ -49,11 +50,14 @@ export default function RegisterComponent() {
             redirect: "follow"
         };
 
-        const res = fetch("/api/auth/register", requestOptions);
-        const data=await res.json();
+        const res =await fetch("/api/auth/register", requestOptions);
+        const data = await res.json();
         console.log(data.success);
-        if(data.success){
-            window.location.href='/dashboard';
+        if(!data.success){
+            alert(data.message);
+        }
+        if (data.success) {
+            window.location.href = '/dashboard';
         }
 
     }
@@ -120,7 +124,7 @@ export default function RegisterComponent() {
                         }
                     </div>
                     <div>
-                        <label htmlFor="shop"   className='block'>Shop Name</label>
+                        <label htmlFor="shop" className='block'>Shop Name</label>
                         <input type="text" placeholder='Enter Your Shop Name' className='w-[43.75vw] px-2 py-1 border  rounded-md ' value={shopname} onChange={(e) => { setShopname(e.target.value) }} />
                     </div>
                     {

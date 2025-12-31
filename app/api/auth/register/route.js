@@ -6,6 +6,7 @@ import dbConnect from "@/lib/mongodb";
 export async function POST(req) {
     await dbConnect();
     const data = await req.json();
+    console.log('got here')
     const parsed = registerSchema.safeParse(data);
     if (!parsed.success) {
         return Response.json({ error: parsed.error.flatten().fieldErrors }, { status: 400 });
@@ -15,6 +16,7 @@ export async function POST(req) {
     const seller = await Seller.findOne({ email: data.email });
     console.log(seller);
     if (seller !== null) {
+        console.log('seller already created');
         return Response.json({ success: false, message: 'Seller already existed !' }, { status: 400 });
     }
 
@@ -23,6 +25,7 @@ export async function POST(req) {
             name: data.name,
             password: hashedpass,
             email: data.email,
+            role:'seller',
             shopname: data.shopname
         });
         if(newseller){

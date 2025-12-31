@@ -18,17 +18,20 @@ const SellerSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    shopname: {
-        type: String,
-        required: true
-    }
-    , isVerified: {
+    shopname: String,
+    role: {
+      type: String,
+      enum: ["seller", "admin"],
+      default: "seller",
+    },
+
+    isVerified: {
         type: Boolean,
         default: false
     }
 },
     {
-        timestamp: true
+        timestamps: true
     })
 
 
