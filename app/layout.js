@@ -9,8 +9,14 @@ const inter = Inter({
 
 
 export const metadata = {
-  title: "eComAdmin",
-  description: "Administrative panel for e-commerce sellers",
+  title: "eComAdmin | Professional Store Management",
+  description: "The ultimate dashboard for sellers and administrators.",
+  // Use an absolute-style path (starting with /) to ensure it works on nested routes
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png", // If you don't have a specific apple-touch-icon
+  },
 };
 
 export default function RootLayout({ children }) {
