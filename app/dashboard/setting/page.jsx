@@ -21,11 +21,7 @@ export default async function SettingsPage() {
     redirect("/login");
   }
 
-  // Ensure role check matches your middleware logic
-  if (decoded.role !== "seller") {
-    console.log('trying to get admin')
-    redirect("/admin");
-  }
+  
 
   await dbConnect();
   const user = await Seller.findById(decoded.sellerId).select("-password").lean();
