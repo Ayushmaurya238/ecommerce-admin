@@ -1,16 +1,18 @@
 // app/components/DashboardHeader.jsx
 'use client'
 
+import { useRouter } from "next/router";
 import { MdOutlineLogout } from "react-icons/md"
 
 export async function DashboardHeader({ sellerName }) {
- 
+    const router=useRouter();
     const LogoutfromAdmin = async () => {
         const requestOptions = {
             method: "GET",
             redirect: "follow"
         };
         await fetch("/api/auth/logout", requestOptions);
+        router.refresh();
     }
     return (
         <div className='flex items-center justify-between'>
