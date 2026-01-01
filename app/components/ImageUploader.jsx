@@ -5,7 +5,7 @@ import { CldUploadWidget } from 'next-cloudinary'
 export default function ImageUploader({ images, setImages }) {
   return (
     <CldUploadWidget
-      uploadPreset="ecomadmin_unsigned"
+      uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
       options={{
         multiple: true,
         maxFiles: 5,
