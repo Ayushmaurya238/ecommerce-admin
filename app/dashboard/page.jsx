@@ -9,6 +9,8 @@ import mongoose from 'mongoose'
 import { redirect } from 'next/navigation';
 import { DashboardHeader } from '../components/DashboardHeader';
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: "Dashboard | eComAdmin",
   description: "To review your products sales analysis",

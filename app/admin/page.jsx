@@ -1,8 +1,11 @@
 // app/admin/page.jsx
+
+
 import AdminSidebar from "@/app/admin/components/AdminSidebar";
 import dbConnect from "@/lib/mongodb";
 import Seller from "@/models/sellers";
 
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: "Admin | eComAdmin",

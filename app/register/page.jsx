@@ -5,8 +5,10 @@ import jwt from 'jsonwebtoken';
 import Seller from "@/models/sellers";
 import { redirect } from "next/navigation";
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
-  title: "register | eComAdmin",
+  title: "Register | eComAdmin",
   description: "Register to become seller on eComAdmin",
 };
 export default async function Register() {
