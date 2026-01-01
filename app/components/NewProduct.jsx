@@ -180,7 +180,7 @@ export default function NewProduct() {
 
 
             {/* Preview */}
-            <div className="grid grid-cols-5 gap-2 mt-3">
+            <div className="flex  gap-2 mt-3">
               {images.map((img, i) => (
                 <div key={i} className="relative group">
                   <img
@@ -190,7 +190,7 @@ export default function NewProduct() {
                   <button
                     type="button"
                     onClick={() => setImages(images.filter((_, index) => index !== i))}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute -top-2 right-[-2px] bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                   >
                     ×
                   </button>
