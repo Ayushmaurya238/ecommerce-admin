@@ -1,7 +1,7 @@
 // app/components/DashboardHeader.jsx
 'use client'
 
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { MdOutlineLogout } from "react-icons/md"
 
 export async function DashboardHeader({ sellerName }) {
