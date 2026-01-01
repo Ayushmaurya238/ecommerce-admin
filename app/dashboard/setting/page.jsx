@@ -5,6 +5,8 @@ import Seller from "@/models/sellers";
 import dbConnect from "@/lib/mongodb";
 import Settingpage from "@/app/components/Settingpage";
 import { redirect, notFound } from "next/navigation";
+import mongoose from "mongoose";
+
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -17,14 +19,15 @@ export default async function SettingsPage() {
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch (err) {
-    console.log('here');
+    // console.log('here');
     redirect("/login");
   }
+  // console.log(decoded.sellerId)
 
   
 
   await dbConnect();
-  const user = await Seller.findById(decoded.sellerId).select("-password").lean();
+  const user = await Seller.findOne({ _id:new mongoose.Types.ObjectId(decoded.sellerId) }).lean()
 
   // If user is not found in DB but token is valid, don't just redirect to login
   // This avoids the middleware loop. Show a 404 or an error.

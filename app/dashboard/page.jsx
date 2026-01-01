@@ -35,7 +35,8 @@ export default async function DashboardPage() {
   /* -------- SERVER DATA FETCH -------- */
   const { metrics, salesData, stockByCategory, sellerName } =
     await getDashboardData(sellerId)
-  // console.log(sellerName)
+    
+  console.log(sellerName)
   return (
     <div className="flex h-screen overflow-hidden">
 
