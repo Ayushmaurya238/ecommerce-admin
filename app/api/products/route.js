@@ -4,6 +4,9 @@ import Product from "@/models/product";
 import jwt from "jsonwebtoken";
 import dbConnect from "@/lib/mongodb";
 
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 /* ================= GET PRODUCTS ================= */
 export async function GET(req) {
   await dbConnect();

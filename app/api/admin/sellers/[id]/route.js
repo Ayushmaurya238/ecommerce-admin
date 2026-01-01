@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 import Seller from "@/models/sellers";
 import dbConnect from "@/lib/mongodb";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 export async function PATCH(req, { params }) {
   await dbConnect();
 

@@ -6,7 +6,8 @@ import dbConnect from "@/lib/mongodb";
 import Settingpage from "@/app/components/Settingpage";
 import { redirect, notFound } from "next/navigation";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function SettingsPage() {
   const token = cookies().get("token")?.value;

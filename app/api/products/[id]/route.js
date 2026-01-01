@@ -4,6 +4,9 @@ import jwt from "jsonwebtoken";
 import dbConnect from "@/lib/mongodb";
 import { productSchema } from "@/validators/product";
 
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 /* ================= HELPER ================= */
 function getSellerId(req) {
   const token = req.cookies.get("token")?.value;

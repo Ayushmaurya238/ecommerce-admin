@@ -7,7 +7,8 @@ import Product from '@/models/product'
 import dbConnect from '@/lib/mongodb'
 import { redirect } from 'next/navigation'
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata = {
   title: "Products | eComAdmin",

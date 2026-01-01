@@ -4,6 +4,9 @@ import Seller from "@/models/sellers";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function POST(req) {
   const { oldPassword, newPassword } = await req.json();
   

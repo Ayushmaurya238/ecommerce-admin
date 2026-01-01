@@ -4,6 +4,9 @@ import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 export async function POST(req) {
   try {
     await dbConnect();

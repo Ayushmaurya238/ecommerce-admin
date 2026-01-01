@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 // import { metadata } from "../layout";
 import LoginPage from "../components/LoginPage";
 
-export const dynamic = 'force-dynamic'
+
 
 export const metadata = {
   title: "Login | eComAdmin",
