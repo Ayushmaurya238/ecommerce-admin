@@ -137,18 +137,7 @@ To design and develop a secure, server-rendered administrative dashboard that:
 - Multiple images per product
 
 ---
-🧱 Tech Stack
-Layer	Technology
-Frontend	Next.js (App Router)
-Backend	Next.js API Routes
-Rendering	Server-Side Rendering (SSR)
-Database	MongoDB
-ODM	Mongoose
-Authentication	JWT
-Validation	Zod
-Charts	Recharts / Chart.js (dummy data)
-Image Storage	Cloudinary
-Styling	Tailwind CSS
+
 
 ## 🧱 Tech Stack
 
