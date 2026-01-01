@@ -178,14 +178,23 @@ export default function NewProduct() {
 
             <ImageUploader images={images} setImages={setImages} />
 
+
             {/* Preview */}
-            <div className="flex gap-2 mt-3">
+            <div className="grid grid-cols-5 gap-2 mt-3">
               {images.map((img, i) => (
-                <img
-                  key={i}
-                  src={img}
-                  className="h-16 w-16 object-cover rounded-md border"
-                />
+                <div key={i} className="relative group">
+                  <img
+                    src={img}
+                    className="h-20 w-20 object-cover rounded-md border"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setImages(images.filter((_, index) => index !== i))}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    ×
+                  </button>
+                </div>
               ))}
             </div>
 
