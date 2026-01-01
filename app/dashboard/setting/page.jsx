@@ -16,11 +16,13 @@ export default async function SettingsPage() {
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch (err) {
+    console.log('here');
     redirect("/login");
   }
 
   // Ensure role check matches your middleware logic
   if (decoded.role !== "seller") {
+    console.log('trying to get admin')
     redirect("/admin");
   }
 
