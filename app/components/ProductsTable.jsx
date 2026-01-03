@@ -119,7 +119,7 @@ export default function ProductTable({ products }) {
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <button
-                                    className="hover:bg-gray-200 p-1 rounded-md"
+                                    className="hover:bg-gray-200 p-1 rounded-md "
                                     onClick={() =>
                                         router.push(`/dashboard/product/edit/${product._id}`)
                                     }

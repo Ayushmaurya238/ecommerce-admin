@@ -12,6 +12,8 @@ export default function RegisterComponent() {
     const [lastname, setLastname] = useState('');
     const [firstname, setFirstname] = useState('');
     const [error, seterror] = useState(null);
+    const [loading, setLoading] = useState(false)
+    
     const handlesubmit = async (e) => {
         e.preventDefault();
         if (password !== confirmedpassword) {
@@ -117,9 +119,9 @@ export default function RegisterComponent() {
                         </div>
                         {
                             error?.password && (
-                                <span className="text-red-500 text-sm">
+                                <div className="text-red-500 text-sm block">
                                     {error.password[0]}
-                                </span>
+                                </div>
                             )
                         }
                     </div>
@@ -135,7 +137,9 @@ export default function RegisterComponent() {
                         )
                     }
                     {/* Shop Name */}
-                    <button type='submit' className='bg-black text-white p-2 rounded-md mt-2 cursor-pointer w-[43.75vw]'>Register</button>
+                    <button type='submit' disabled={loading} className='bg-black text-white p-2 rounded-md mt-2 cursor-pointer w-[43.75vw] hover:bg-gray-900 transition disabled:opacity-50'>
+                     {loading ? 'Registering...' : 'Register'}
+                    </button>
                 </form>
                 <div className='flex justify-center relative gap-2'>
                     <span>

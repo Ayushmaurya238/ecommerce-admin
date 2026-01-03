@@ -20,6 +20,8 @@ export default function EditPage({ id }) {
     const [images, setImages] = useState(['', ''])
     const [imageError, setImageError] = useState('')
     const [zoderror, setZoderror] = useState(null)
+    const [loading, setLoading] = useState(false)
+
     useEffect(() => {
 
         if (images.length > 5) {
@@ -277,9 +279,9 @@ export default function EditPage({ id }) {
 
                         <button
                             type="submit"
-                            className="px-5 py-2 bg-black text-white rounded-md"
+                            className="px-5 py-2 bg-black text-white rounded-md hover:bg-gray-900 transition disabled:opacity-50"
                         >
-                            Save Product
+                             {loading ? 'Saving...' : 'Save'}
                         </button>
                     </div>
 

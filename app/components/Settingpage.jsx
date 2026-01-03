@@ -161,7 +161,7 @@ const Settingpage = ({ user }) => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-black text-white font-bold py-3 rounded-lg hover:bg-gray-800 transition disabled:opacity-50 shadow-lg shadow-gray-200"
+                  className="w-full bg-black text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition disabled:opacity-50 shadow-lg shadow-gray-200"
                 >
                   {loading ? "Updating..." : "Save New Password"}
                 </button>
