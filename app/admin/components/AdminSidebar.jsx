@@ -11,7 +11,7 @@ export default function AdminSidebar() {
     await fetch('/api/auth/logout')
     router.push('/login')
   }
-
+  
   const link = (href, label, Icon) => (
     <Link
       href={href}
