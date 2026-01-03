@@ -11,8 +11,13 @@ export async function DashboardHeader({ sellerName }) {
             method: "GET",
             redirect: "follow"
         };
-        await fetch("/api/auth/logout", requestOptions);
-        router.refresh();
+        const res=await fetch("/api/auth/logout", requestOptions);
+        if(res.ok){
+            router.push('/')
+        }
+        else{
+            alert('Unable to logout')
+        }
     }
     return (
         <div className='flex items-center justify-between'>

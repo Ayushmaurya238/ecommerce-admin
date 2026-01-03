@@ -26,7 +26,7 @@ export default function RegisterComponent() {
             email,
             shopname: shopname, // ✅ FIXED
         });
-
+        setLoading(true)
         if (!parsed.success) {
             console.log(parsed.error.flatten().fieldErrors);
             seterror(parsed.error.flatten().fieldErrors);
@@ -55,6 +55,7 @@ export default function RegisterComponent() {
         const res =await fetch("/api/auth/register", requestOptions);
         const data = await res.json();
         console.log(data.success);
+        setLoading(false)
         if(!data.success){
             alert(data.message);
         }

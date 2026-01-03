@@ -59,7 +59,7 @@ export default function NewProduct() {
       setZoderror(parsed.error.flatten().fieldErrors)
       return
     }
-
+    setLoading(true)
     setZoderror(null)
 
     const res = await fetch('/api/products', {
@@ -67,7 +67,7 @@ export default function NewProduct() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     })
-
+    setLoading(false);
     const data = await res.json()
 
     if (!res.ok) {

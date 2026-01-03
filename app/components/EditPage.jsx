@@ -102,7 +102,7 @@ export default function EditPage({ id }) {
         }
 
         const parsed = productSchema.safeParse(payload)
-
+        setLoading(true)
         if (!parsed.success) {
             setZoderror(parsed.error.flatten().fieldErrors)
             return
@@ -128,6 +128,7 @@ export default function EditPage({ id }) {
 
         const data = await res.json();
         console.log(data);
+        setLoading(false)
         if (res?.status === 200) {
             router.push('/dashboard/product');
             router.refresh();

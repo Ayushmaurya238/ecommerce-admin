@@ -128,7 +128,8 @@ export default function ProductTable({ products }) {
                                 </button>
 
                                 <button
-                                    className="hover:bg-gray-200 p-1 rounded-md"
+                                    className="hover:bg-gray-200 p-1 rounded-md "
+                                    
                                     onClick={() => handleDelete(product._id)}
                                 >
                                     <MdDeleteOutline />

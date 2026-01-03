@@ -32,7 +32,7 @@ export default function ProductDetailClient({ product }) {
       {/* BACK */}
       <button
         onClick={() => router.back()}
-        className="text-sm underline mb-4"
+        className="text-sm mb-4"
       >
         ← Back to Products
       </button>
@@ -44,7 +44,7 @@ export default function ProductDetailClient({ product }) {
           <div className="overflow-hidden rounded-md border group">
             <img
               src={product.images[activeImage]}
-              className="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-110"
+              className="w-full h-80 object-contain transition-transform duration-300 group-hover:scale-110"
             />
           </div>
 
